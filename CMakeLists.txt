@@ -11,6 +11,6 @@ find_package(OpenCV REQUIRED)
 
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-add_executable(hello_cpp ${SOURCE_FILES})
+add_executable(hello_opencv_cpp ${SOURCE_FILES})
 
-target_link_libraries(hello_cpp ${OpenCV_LIBS})
+target_link_libraries(hello_opencv_cpp ${OpenCV_LIBS})
