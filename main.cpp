@@ -4,8 +4,6 @@
 #include "util.h"
 #include "svm.h"
 
-std::string toString(const std::vector<float>& v);
-
 using cv::Mat;
 using cv::Size;
 using image::toGrayscale;
