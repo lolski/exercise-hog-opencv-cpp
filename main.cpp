@@ -1,7 +1,7 @@
 #include <opencv/cv.h>
 #include <opencv2/opencv.hpp>
 #include "image.h"
-#include <libconfig.h++>
+#include "Setting.h"
 #include "util.h"
 #include "svm.h"
 
@@ -10,18 +10,14 @@ using cv::Size;
 using image::toGrayscale;
 using image::save;
 using image::extract;
-using libconfig::Config;
 using std::cout;
 using std::endl;
 using std::string;
 using svm::computeHog;
 
 int main() {
-  Config cfg;
-	cfg.readFile("application.cfg");
-
-	string base = cfg.lookup("app.app_dir");
-//  string base = "/Users/lolski/Playground/hello-opencv-cpp/res/cities"; // 1:11
+	Setting conf("application.cfg");
+  string base = conf.get("application.dir");
   string vid1 = base + "/Travel by Drone- Gang Depot Es, Pasar Minggu, Jakarta 12560, Indonesia (1-59).mp4";
   Mat img  = extract(vid1, 1659);
   Mat gray = toGrayscale(img);
