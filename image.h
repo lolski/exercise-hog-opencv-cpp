@@ -30,13 +30,13 @@ namespace image {
 		return;
 	}
 
-	Mat toGrayscale(const Mat &img) {
+	Mat toGrayscale(const Mat& img) {
 		Mat grey(img.rows, img.cols, CV_8U);
 		cvtColor(img, grey, COLOR_BGR2GRAY, 1);
 		return grey;
 	}
 
-	Mat extract(VideoCapture &vid, long frame) {
+	Mat extract(VideoCapture& vid, long frame) {
 		Mat img;
 		vid.set(CAP_PROP_POS_FRAMES, frame);
 		vid.read(img);
