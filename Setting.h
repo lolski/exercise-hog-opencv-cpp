@@ -19,6 +19,10 @@ public:
 		read_json(file, pt);
 	}
 
+	~Setting() {
+		// TODO: call pt.clear()?
+	}
+
 	string get(const string& conf) {
 		return pt.get<string>(conf);
 	}
