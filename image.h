@@ -45,8 +45,19 @@ namespace image {
 
 	Mat extract(const string& vidFile, long frame) {
 		VideoCapture vid(vidFile);
-		Mat img = extract(vid, frame);
+		auto img = extract(vid, frame);
 		return img;
+	}
+
+	Size size(const Mat& img) {
+		auto sz = Size(img.cols, img.rows);
+		return sz;
+	}
+
+	Size size(const string& path) {
+		auto img = read(path);
+		auto sz = size(img);
+		return sz;
 	}
 }
 

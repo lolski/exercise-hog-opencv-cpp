@@ -14,12 +14,20 @@ using cv::Size;
 using std::vector;
 
 namespace svm {
-	vector<float> computeHog(Mat img, Size winSize, Size blockSize,
-	                         Size blockStride, Size cellSize,
-	                         int nbins, Size winStride, Size padding) {
+	// TODO: this function does not work yet
+	vector<float> computeHog(Mat img, const Size& winSize, const Size& blockSize,
+	                         const Size& blockStride, const Size& cellSize,
+	                         int nbins, const Size& winStride, const Size& padding) {
 		HOGDescriptor hog(winSize, blockSize, blockStride, cellSize, nbins);
 		vector<float> descriptor;
 		hog.compute(img, descriptor, winStride, padding);
+		return descriptor;
+	}
+
+	vector<float> computeHog(Mat img) {
+		HOGDescriptor hog;
+		vector<float> descriptor;
+		hog.compute(img, descriptor);
 		return descriptor;
 	}
 }
