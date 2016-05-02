@@ -1,10 +1,11 @@
 cmake_minimum_required(VERSION 3.5)
 project(hello_opencv_cpp)
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
-
 # opencv3
 # brew install opencv3 --with-contrib
+set(CMAKE_PREFIX_PATH "/usr/local/Cellar/opencv3/3.1.0_3/share/OpenCV")
+set(OpenCV_INCLUDE_DIRS "/usr/local/Cellar/opencv3/3.1.0_3/include")
+set(OpenCV_LIBS "/usr/local/Cellar/opencv3/3.1.0_3/lib")
 find_package(OpenCV REQUIRED)
 
 # boost property tree
