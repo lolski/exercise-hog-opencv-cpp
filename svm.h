@@ -11,13 +11,22 @@
 using cv::HOGDescriptor;
 using cv::Mat;
 using cv::Size;
+using image::dimension;
 using std::vector;
 
 namespace svm {
+	bool minimumDimensionSatisfied(const Mat &img) {
+		auto sz = dimension(img);
+		return (sz.width >= 64 && sz.height >= 128);
+	}
+
 	// TODO: this function does not work yet
 	vector<float> computeHog(Mat img, const Size& winSize, const Size& blockSize,
 	                         const Size& blockStride, const Size& cellSize,
 	                         int nbins, const Size& winStride, const Size& padding) {
+		// http://stackoverflow.com/questions/14315488/opencv-getting-stdlength-error-what-vector-m-fill-insert-when-computing
+		assert(minimumDimensionSatisfied(img));
+		
 		HOGDescriptor hog(winSize, blockSize, blockStride, cellSize, nbins);
 		vector<float> descriptor;
 		hog.compute(img, descriptor, winStride, padding);
@@ -25,6 +34,9 @@ namespace svm {
 	}
 
 	vector<float> computeHog(Mat img) {
+		// http://stackoverflow.com/questions/14315488/opencv-getting-stdlength-error-what-vector-m-fill-insert-when-computing
+		assert(minimumDimensionSatisfied(img));
+
 		HOGDescriptor hog;
 		vector<float> descriptor;
 		hog.compute(img, descriptor);

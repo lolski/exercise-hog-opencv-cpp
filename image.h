@@ -49,14 +49,14 @@ namespace image {
 		return img;
 	}
 
-	Size size(const Mat& img) {
+	Size dimension(const Mat &img) {
 		auto sz = Size(img.cols, img.rows);
 		return sz;
 	}
 
 	Size size(const string& path) {
 		auto img = read(path);
-		auto sz = size(img);
+		auto sz = dimension(img);
 		return sz;
 	}
 }

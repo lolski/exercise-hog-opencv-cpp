@@ -10,7 +10,7 @@ using cv::Size;
 using image::extract;
 using image::read;
 using image::save;
-using image::size;
+using image::dimension;
 using image::toGrayscale;
 using std::cout;
 using std::endl;
@@ -30,11 +30,13 @@ void find_in_image() {
 	Setting conf("application.cfg");
 	string base = conf.getString("application.res_dir");
 	Mat haystack = read(base + "/car_features/01.jpg");
-	Mat needle = read(base + "/car_features/01.jpg");
-	cout << size(haystack) << ", " << size(needle) << endl;
-	auto a = size(haystack);
-	cout << a.width << endl;
-//	vector<float> hog = computeHog(needle);
+	Mat needle = toGrayscale(cv::imread(base + "/car_features/01.jpg"));
+	Mat needle64x128;
+	cv::resize(needle, needle64x128, Size(64, 128));
+
+	vector<float> hog = computeHog(needle64x128);
+
+	cout << hog.size() << endl;
 }
 
 int main() {
