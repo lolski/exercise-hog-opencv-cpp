@@ -3,7 +3,7 @@
 #include "image.h"
 #include "Setting.h"
 #include "util.h"
-#include "svm.h"
+#include "hog.h"
 
 using cv::Mat;
 using cv::Size;
@@ -15,7 +15,8 @@ using image::toGrayscale;
 using std::cout;
 using std::endl;
 using std::string;
-using svm::computeHog;
+using hog::computeHog;
+using hog::visualizeHog;
 using util::toString;
 
 void save_single_frame() {
@@ -30,13 +31,16 @@ void find_in_image() {
 	Setting conf("application.cfg");
 	string base = conf.getString("application.res_dir");
 	Mat haystack = read(base + "/car_features/01.jpg");
-	Mat needle = toGrayscale(cv::imread(base + "/car_features/01.jpg"));
+	Mat needle = toGrayscale(imread(base + "/car_features/01.jpg"));
 	Mat needle64x128;
 	cv::resize(needle, needle64x128, Size(64, 128));
 
 	vector<float> hog = computeHog(needle64x128);
 
 	cout << hog.size() << endl;
+
+	Mat visual = visualizeHog(needle64x128, hog, Size(64, 128));
+	save(visual, base + "/car_features/01-visual.jpg");
 }
 
 int main() {
