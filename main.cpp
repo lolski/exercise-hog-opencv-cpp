@@ -1,9 +1,10 @@
 #include <opencv/cv.h>
 #include <opencv2/opencv.hpp>
+#include "convolution.h"
+#include "hog.h"
 #include "image.h"
 #include "Setting.h"
 #include "util.h"
-#include "hog.h"
 
 using cv::Mat;
 using cv::Size;
@@ -43,8 +44,17 @@ void find_in_image() {
 	save(visual, base + "/car_features/01-visual.jpg");
 }
 
+void copy_image() {
+	Setting conf("application.cfg");
+	string base = conf.getString("application.res_dir");
+	Mat original = read(base + "/car_features/01.jpg");
+	Mat copy_ = copy(original);
+	save(copy_, base + "/car_features/01-copy.jpg");
+}
+
 int main() {
 //	save_single_frame();
-	find_in_image();
+//	find_in_image();
+	copy_image();
 	return 0;
 }
