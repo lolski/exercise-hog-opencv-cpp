@@ -7,7 +7,7 @@
 #include "util.h"
 
 using convolution::bound;
-using convolution::convolute;
+using convolution::boxBlur;
 using cv::Mat;
 using cv::Size;
 using image::extract;
@@ -59,11 +59,9 @@ void convolute_image() {
 	Setting conf("application.cfg");
 	string base = conf.getString("application.res_dir");
 	Mat original = read(base + "/cities/out.jpg");
-	Mat blur(3, 3, CV_32F);
-	blur.setTo(cv::Scalar(1.f));
-	blur = blur / 9.f;
 
-	Mat convoluted = convolute(original, blur);
+//	Mat convoluted = convolute(convolute(convolute(convolute(original, blur), blur), blur), blur);
+	Mat convoluted = boxBlur(original, 9);
 	save(convoluted, base + "/cities/out-conv.jpg");
 }
 

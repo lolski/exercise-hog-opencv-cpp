@@ -55,7 +55,7 @@ namespace convolution {
 	}
 
 	Mat convolute(Mat original, Mat kernel) {
-		if (original.type() != CV_8UC3) throw std::runtime_error("orig must be of type CV_8UC3");
+		if (original.type() != CV_8UC3 && kernel.type() != CV_32F) throw std::runtime_error("original and kernel must be of type CV_8UC3 and CV_32F");
 
 		Mat result(original.rows, original.cols, original.type());
 
@@ -63,6 +63,18 @@ namespace convolution {
 			for (int col = 0; col < result.cols; ++col) {
 				result.at<Vec3b>(row, col) = convolutePixel(original, kernel, row, col);
 			}
+		}
+
+		return result;
+	}
+
+	Mat boxBlur(Mat original, int pass, Mat kernel = Mat(3, 3, CV_32F, cv::Scalar(1.f/9))) {
+		if (original.type() != CV_8UC3 && kernel.type() != CV_32F) throw std::runtime_error("original and kernel must be of type CV_8UC3 and CV_32F");
+
+		Mat result = original.clone();
+
+		for (int i = 0; i < pass; ++i) {
+			result = convolute(result, kernel);
 		}
 
 		return result;
