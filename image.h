@@ -25,9 +25,9 @@ namespace image {
 		return res;
 	}
 
-	void save(const Mat& in, const string& out) {
-		imwrite(out, in);
-		return;
+	bool save(const Mat& in, const string& out) {
+		auto res = imwrite(out, in);
+		return res;
 	}
 
 	Mat toGrayscale(const Mat& img) {

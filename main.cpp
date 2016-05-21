@@ -6,6 +6,8 @@
 #include "Setting.h"
 #include "util.h"
 
+using convolution::a;
+using convolution::convolute;
 using cv::Mat;
 using cv::Size;
 using image::extract;
@@ -53,10 +55,27 @@ void copy_image() {
 	save(copy_, base + "/car_features/01-copy.jpg");
 }
 
+void convolute_image() {
+//	Mat m(3, 3, CV_8U);
+//	cout << a(-1, 3) << ", " << a(0, 3) << ", " << a(2, 3) << ", " <<
+//					a(4, 3) << endl;
+
+	Setting conf("application.cfg");
+	string base = conf.getString("application.res_dir");
+	Mat original = read(base + "/cities/out.jpg");
+	cout << "1" <<endl;
+	Mat identity = Mat::zeros(3, 3, CV_8UC3);;
+
+	cout << "2" <<endl;
+	Mat convoluted = convolute(original, identity);
+	cout << "3" <<endl;
+	save(convoluted, base + "/cities/out-conv.jpg");
+	cout << "4" <<endl;
+}
+
 int main() {
 //	save_single_frame();
 //	find_in_image();
-	cout << CV_8UC3 << endl;
-	copy_image();
+	convolute_image();
 	return 0;
 }

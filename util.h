@@ -28,9 +28,8 @@ namespace util {
 		if (orig.type() != CV_8UC3) throw std::runtime_error("orig must be of type CV_8UC3");
 
 		Mat result(orig.rows, orig.cols, orig.type());
-		int row, col;
-		for (row = 0; row < result.rows; ++row) {
-			for (col = 0; col < result.cols; ++col) {
+		for (int row = 0; row < result.rows; ++row) {
+			for (int col = 0; col < result.cols; ++col) {
 				result.at<uint>(row, col) = orig.at<uint>(row, col);
 			}
 		}
