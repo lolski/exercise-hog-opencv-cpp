@@ -6,11 +6,15 @@
 #define HELLO_OPENCV_CPP_CONVOLUTION_H
 
 #include <opencv/cv.h>
+#include "util.h"
 
 namespace convolution {
 	using cv::Mat;
+	using cv::Vec3b;
+	using std::cout;
+	using std::endl;
 
-	int a(int original, int count) {
+	int bound(int original, int count) {
 		int extended;
 		if (original < 0) extended = 0; // top edge
 		else if (original > count - 1) extended = count - 1; // bottom edge
@@ -19,38 +23,47 @@ namespace convolution {
 		return extended;
 	}
 
-	uint convolutePixel(Mat original, Mat kernel, int rorig, int corig) {
-		auto rhalved = (kernel.rows-1 / 2);
-		auto chalved = (kernel.cols-1 / 2);
+	Vec3b convolutePixel(Mat original, Mat kernel, int rorig, int corig) {
+		if (original.type() != CV_8UC3 && kernel.type() != CV_32F) throw std::runtime_error("original and kernel must be of type CV_8UC3 and CV_32F");
 
-		auto rfrom = rorig - rhalved;
-		auto rto   = rorig + rhalved;
-		auto cfrom = corig - chalved;
-		auto cto   = corig + chalved;
+		Vec3b accumulator(0, 0, 0);
 
-		uint accum = 0;
-		for (int i = rfrom; i <= rto; ++i) {
-			for (int j = cfrom; j <= cto; ++j) {
-				int row = a(rorig, original.rows);
-				int col = a(corig, original.cols);
-				auto res = original.at<uint>(row, col) * kernel.at<uint>(row, col);
-				accum += res;
+		int hrkern = (kernel.rows-1) / 2;
+		int hckern = (kernel.cols-1) / 2;
+
+//		cout << "orig(" << rorig << "," << corig << ") = ";
+
+		for (int rkern = 0; rkern < kernel.rows; ++rkern) {
+			for (int ckern = 0; ckern < kernel.cols; ++ckern) {
+				int rdelta = bound(rorig-hrkern+rkern, original.rows);
+				int cdelta = bound(corig-hckern+ckern, original.cols);
+//				cout << "(kern(" << rkern << "," << ckern << ") * ";
+//				cout <<  "orig(" << rdelta << ", " << cdelta << ") + ";
+
+				Vec3b vorig = original.at<Vec3b>(rdelta, cdelta);
+				float vkern = kernel.at<float>(rkern, ckern);
+
+				accumulator[0] += (uchar)(vorig[0] * vkern);
+				accumulator[1] += (uchar)(vorig[1] * vkern);
+				accumulator[2] += (uchar)(vorig[2] * vkern);
 			}
 		}
 
-		return accum;
+//		cout << endl;
+
+		return accumulator;
 	}
 
-	Mat convolute(Mat orig, Mat kernel) {
-		if (orig.type() != CV_8UC3) throw std::runtime_error("orig must be of type CV_8UC3");
+	Mat convolute(Mat original, Mat kernel) {
+		if (original.type() != CV_8UC3) throw std::runtime_error("orig must be of type CV_8UC3");
 
-		Mat result(orig.rows, orig.cols, orig.type());
+		Mat result(original.rows, original.cols, original.type());
+
 		for (int row = 0; row < result.rows; ++row) {
 			for (int col = 0; col < result.cols; ++col) {
-				result.at<uint>(row, col) = convolutePixel(orig, kernel, row, col);
+				result.at<Vec3b>(row, col) = convolutePixel(original, kernel, row, col);
 			}
 		}
-		std::cout<< "finished" << std::endl;
 
 		return result;
 	}

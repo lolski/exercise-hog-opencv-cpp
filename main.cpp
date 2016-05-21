@@ -6,7 +6,7 @@
 #include "Setting.h"
 #include "util.h"
 
-using convolution::a;
+using convolution::bound;
 using convolution::convolute;
 using cv::Mat;
 using cv::Size;
@@ -56,21 +56,15 @@ void copy_image() {
 }
 
 void convolute_image() {
-//	Mat m(3, 3, CV_8U);
-//	cout << a(-1, 3) << ", " << a(0, 3) << ", " << a(2, 3) << ", " <<
-//					a(4, 3) << endl;
-
 	Setting conf("application.cfg");
 	string base = conf.getString("application.res_dir");
 	Mat original = read(base + "/cities/out.jpg");
-	cout << "1" <<endl;
-	Mat identity = Mat::zeros(3, 3, CV_8UC3);;
+	Mat blur(3, 3, CV_32F);
+	blur.setTo(cv::Scalar(1.f));
+	blur = blur / 9.f;
 
-	cout << "2" <<endl;
-	Mat convoluted = convolute(original, identity);
-	cout << "3" <<endl;
+	Mat convoluted = convolute(original, blur);
 	save(convoluted, base + "/cities/out-conv.jpg");
-	cout << "4" <<endl;
 }
 
 int main() {
