@@ -8,11 +8,19 @@
 #include <opencv/cv.h>
 
 using cv::Mat;
+using cv::Vec3b;
 using std::string;
 using std::stringstream;
 using std::vector;
 
 namespace util {
+	string toString(const Vec3b v) {
+		stringstream accumulator;
+
+		accumulator << "Vec3b(" << (int)v[0] << ", " << (int)v[1] << ", " << (int)v[2];
+
+		return accumulator.str();
+	}
 	string toString(const vector<float>& v) {
 		stringstream accumulator;
 
