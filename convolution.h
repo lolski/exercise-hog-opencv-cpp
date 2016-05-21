@@ -9,16 +9,15 @@
 
 using cv::Mat;
 
+// caveat: this method needs to call result.at<T> differently, according to the value returned by orig.type()
 Mat copy(Mat& orig) {
-	assert(orig.type() != CV_8U);
-
-	Mat result(orig.rows, orig.cols, CV_8U); // todo: if CV_8U always what we want?
-	for (int row = 0; row < result.rows; ++row) {
-		for (int col = 0; col < result.cols; ++col) {
-			result.at<uchar>(col, row) = orig.at<uchar>(col, row);
+	Mat result(orig.rows, orig.cols, orig.type());
+	int row, col;
+	for (row = 0; row < result.rows; ++row) {
+		for (col = 0; col < result.cols; ++col) {
+			result.at<int>(row, col) = orig.at<int>(row, col);
 		}
 	}
-
 	return result;
 }
 
