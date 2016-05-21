@@ -56,6 +56,7 @@ void copy_image() {
 int main() {
 //	save_single_frame();
 //	find_in_image();
+	cout << CV_8UC3 << endl;
 	copy_image();
 	return 0;
 }
