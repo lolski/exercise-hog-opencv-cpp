@@ -18,6 +18,7 @@ using std::endl;
 using std::string;
 using hog::computeHog;
 using hog::visualizeHog;
+using util::copy;
 using util::toString;
 
 void save_single_frame() {
