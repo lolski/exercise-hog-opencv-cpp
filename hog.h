@@ -7,6 +7,7 @@
 
 #include <opencv/cv.h>
 #include <opencv2/opencv.hpp>
+#include "image.h"
 
 using cv::HOGDescriptor;
 using cv::Mat;
